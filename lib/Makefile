@@ -135,6 +135,21 @@ libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN): $(LIBOBJECTS) $(LIBOBJECTS_X)
 endif
 
 ifeq ($(NETPBMLIBTYPE),dll)
+ifeq ($(UNAME),OS/2)
+ifeq ($(STATICLIB_TOO),y)
+$(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll: $(LIBOBJECTS) $(LIBOBJECTS_X) libnetpbm_s.$(STATICLIBSUFFIX)
+else
+$(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll: $(LIBOBJECTS) $(LIBOBJECTS_X)
+endif
+	echo "LIBRARY $(NETPBMSHLIBPREFIX)netpbm$(DLLVER) INITINSTANCE TERMINSTANCE" > $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def
+	echo "DATA MULTIPLE" >> $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def
+	echo "DESCRIPTION \"$(BUILDLEVEL_INFO)@@netpbm\"" >> $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def
+	echo "EXPORTS" >> $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def
+	emxexp $(LIBOBJECTS) $(LIBOBJECTS_X) >> $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def
+	$(LD) $(LDSHLIB) -o $@ -Zdll $(LDFLAGS) $(LIBOBJECTS) $(LIBOBJECTS_X) \
+            $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def $(LDLIBS) $(LADD)
+	emximp -o libnetpbm_dll.$(STATICLIBSUFFIX) $@
+else
 ifeq ($(STATICLIB_TOO),Y)
 $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll: $(LIBOBJECTS) $(LIBOBJECTS_X) libnetpbm.$(STATICLIBSUFFIX)
 else
@@ -145,6 +160,7 @@ endif
 	    -Wl,--output-def,$(NETPBMSHLIBPREFIX)netpbm$(DLLVER).def \
             -Wl,--out-implib,libnetpbm.dll.a -o $@ $(LDFLAGS) \
             $(LIBOBJECTS) $(LIBOBJECTS_X) $(LDLIBS) $(LADD) 
+endif
 endif
 
 ifeq ($(NETPBMLIBTYPE),dylib)
@@ -185,10 +201,14 @@ else
 endif
 
 ifeq ($(BUILD_STATICLIB),Y)
+ifeq ($(UNAME),OS/2)
+libnetpbm_s.$(STATICLIBSUFFIX): $(LIBOBJECTS) $(LIBOBJECTS_X)
+else
 libnetpbm.$(STATICLIBSUFFIX): $(LIBOBJECTS) $(LIBOBJECTS_X)
 	-rm -f $@
 	$(AR) rc $@ $(LIBOBJECTS) $(LIBOBJECTS_X)
 	-$(RANLIB) $@
+endif
 endif
 
 

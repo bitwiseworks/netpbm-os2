@@ -73,6 +73,11 @@
 
 include $(SRCDIR)/version.mk
 
+UNAME := $(shell uname -s)
+VENDOR ?=community
+BUILD_INFO=\#\#1\#\# $(shell date +'%d %b %Y %H:%M:%S')     $(shell uname -n)
+BUILDLEVEL_INFO=@\#$(VENDOR):$(NETPBM_MAJOR_RELEASE).$(NETPBM_MINOR_RELEASE).$(NETPBM_POINT_RELEASE)\#@$(BUILD_INFO)::::$(NETPBM_POINT_RELEASE)::
+
 # .DELETE_ON_ERROR is a special predefined Make target that says to delete
 # the target if a command in the rule for it fails.  That's important,
 # because we don't want a half-made target sitting around looking like it's
