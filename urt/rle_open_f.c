@@ -83,7 +83,11 @@ my_popen(const char * const cmd,
             close(i);
 
         /* Finally, invoke the program. */
+#ifdef __OS2__
+        if ( execl("/@unixroot/usr/sh", "sh", "-c", cmd, NULL) < 0 )
+#else
         if ( execl("/bin/sh", "sh", "-c", cmd, NULL) < 0 )
+#endif
             exit(127);
         /* NOTREACHED */
     }   

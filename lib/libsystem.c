@@ -560,7 +560,11 @@ pm_system2(void stdinFeeder(int, void *),
    Return as *termStatusP the termination status of the processor process
    (the one running the program named 'progName').
 -----------------------------------------------------------------------------*/
+#ifdef __OS2__
+    pm_system2_lp("/@unixroot/usr/sh", 
+#else
     pm_system2_lp("/bin/sh", 
+#endif
                   stdinFeeder, feederParm, stdoutAccepter, accepterParm,
                   termStatusP,
                   "sh", "-c", shellCommand, NULL);

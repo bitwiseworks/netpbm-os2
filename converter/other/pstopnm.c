@@ -819,7 +819,11 @@ findGhostscriptProg(const char ** const retvalP) {
 
             pathwork = strdup(getenv("PATH"));
 
+#ifdef __OS2__
+            candidate = strtok(pathwork, ";");
+#else
             candidate = strtok(pathwork, ":");
+#endif
 
             *retvalP = NULL;
             while (!*retvalP && candidate) {
@@ -838,13 +842,21 @@ findGhostscriptProg(const char ** const retvalP) {
                              filename, errno, strerror(errno));
                 pm_strfree(filename);
 
+#ifdef __OS2__
+                candidate = strtok(NULL, ";");
+#else
                 candidate = strtok(NULL, ":");
+#endif
             }
             free(pathwork);
         }
     }
     if (*retvalP == NULL)
+#ifdef __OS2__
+        *retvalP = strdup("/@unixroot/usr/bin/gs");
+#else
         *retvalP = strdup("/usr/bin/gs");
+#endif
 }
 
 
