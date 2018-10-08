@@ -16,11 +16,20 @@ SUBDIRS = pamtris
 # This package is so big, it's useful even when some parts won't 
 # build.
 
+UNAME := $(shell uname -s)
+ifeq ($(UNAME),OS/2)
+PORTBINARIES = pamcrater pamgauss pamgradient \
+	       pamseq pamshadedrelief pamstereogram \
+	       pbmpage pbmmake pbmupc \
+	       pgmkernel pgmmake pgmnoise pgmramp \
+	       ppmcie ppmcolors ppmforge ppmmake ppmpat ppmrough ppmwheel
+else
 PORTBINARIES = pamcrater pamgauss pamgradient \
 	       pamseq pamshadedrelief pamstereogram \
 	       pbmpage pbmmake pbmtext pbmupc \
 	       pgmkernel pgmmake pgmnoise pgmramp \
-	       ppmcie ppmcolors ppmforge ppmmake ppmpat ppmrough ppmwheel \
+	       ppmcie ppmcolors ppmforge ppmmake ppmpat ppmrough ppmwheel
+endif
 
 ifneq ($(DONT_HAVE_PROCESS_MGMT),Y)
 PORTBINARIES += pbmtextps 
