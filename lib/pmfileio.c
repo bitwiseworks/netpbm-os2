@@ -128,7 +128,7 @@ tempFileOpenFlags(void) {
 #if !MSVCRT
         | O_EXCL
 #endif
-#if MSVCRT
+#if defined(MSVCRT) || defined(__OS2__)
         | O_BINARY
 #endif
         ;

@@ -133,7 +133,7 @@
 ** of stdin and stdout to binary for all Netpbm programs.
 ** You need this with Cygwin (Windows).
 */
-#if MSVCRT || defined(__CYGWIN__) || defined(DJGPP)
+#if MSVCRT || defined(__CYGWIN__) || defined(DJGPP) || defined(__OS2__)
 #define HAVE_SETMODE
 #endif
 
@@ -152,7 +152,7 @@
 /* On Windows, unlinking a file is deleting it, and you can't delete an open
    file, so unlink of an open file fails.  The errno is (incorrectly) EACCES.
 */
-#if MSVCRT || defined(__CYGWIN__) || defined(DJGPP)
+#if MSVCRT || defined(__CYGWIN__) || defined(DJGPP) || defined(__OS2__)
   #define CAN_UNLINK_OPEN 0
 #else
   #define CAN_UNLINK_OPEN 1
@@ -338,6 +338,9 @@ typedef int qsort_comparison_fn(const void *, const void *);
 
 #if MSVCRT
   #define pm_pipe _pipe
+#elif defined(__OS2__)
+  #include <sys/socket.h>
+  #define pm_pipe(A) socketpair(AF_UNIX, SOCK_STREAM,0, A)
 #else
   #define pm_pipe pipe
 #endif
