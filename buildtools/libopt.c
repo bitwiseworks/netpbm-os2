@@ -218,6 +218,16 @@ parse_prefix(const char * const filename,
     int prefix_length;
     int i;
 
+#ifdef __OS2__ // on os/2 a emtpy prefix list is perfect valid
+    if (strlen(SHLIBPREFIXLIST) == 0) {
+        prefix_length = 0;
+        prefix_good = TRUE;
+        *prefix_length_p = prefix_length;
+        *prefix_good_p = prefix_good;
+        return;
+    }
+#endif
+
     parse_prefixlist(SHLIBPREFIXLIST , shlibprefixlist, error_p);
     if (!*error_p) {
         if (strcmp(shlibprefixlist[0], "") == 0) {

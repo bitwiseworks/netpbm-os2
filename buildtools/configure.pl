@@ -208,6 +208,10 @@ sub tmpdir() {
             }
         }
     }
+    if ($OSNAME eq 'os2') {
+       $retval =~ s/\\/\//g;
+    }
+
     return $retval;
 }
 
@@ -340,10 +344,10 @@ sub testCompile($$$) {
     print ("Doing test compile: $compileCommand\n");
     my $rc = system($compileCommand);
     
-    unlink($oFileName);
     close($oFile);
-    unlink($cFileName);
+    unlink($oFileName);
     close($cFile);
+    unlink($cFileName);
 
     $$successR = ($rc == 0);
 }
@@ -365,15 +369,19 @@ sub testCompileLink($$$) {
 
     # Note that $flags may contain -l options, which where static linking
     # is involved have to go _after_ the base object file ($oFileName).
+
+    if ($OSNAME eq 'os2') {
+        $flags .= " -Zomf -Zhigh-mem";
+    }
     
     my $compileCommand = "$testCc -o $oFileName $cFileName $flags";
     print ("Doing test compile/link: $compileCommand\n");
     my $rc = system($compileCommand);
     
-    unlink($oFileName);
     close($oFile);
-    unlink($cFileName);
+    unlink($oFileName);
     close($cFile);
+    unlink($cFileName);
 
     $$successR = ($rc == 0);
 }
@@ -472,6 +480,8 @@ sub computePlatformDefault($) {
         $$defaultP = "sun";
     } elsif ($OSNAME eq "dec_osf") {
         $$defaultP = "tru64";
+    } elsif ($OSNAME eq "os2") {
+        $$defaultP = "os2";
     } else {
         print("Unrecognized OSNAME='$OSNAME'.  No default possible\n");
     }
@@ -504,6 +514,7 @@ sub getPlatform() {
     print("unixware Unixware\n");
     print("sco      SCO OpenServer\n");
     print("beos     BeOS\n");
+    print("os2      OS/2 eCS ArcaOS\n");
     print("none     none of these are even close\n");
     print("\n");
 
@@ -524,6 +535,7 @@ sub getPlatform() {
                     "sco"      => "SCO",
                     "darwin"   => "DARWIN",
                     "amigaos"  => "AMIGA",
+                    "os2"      => "OS/2",
                     "none"     => "NONE"
                     );
 
@@ -676,6 +688,7 @@ sub getCompiler($$$) {
                             "OPENBSD" => 1,
                             "FREEBSD" => 1,
                             "DARWIN"  => 1,
+                            "OS/2"    => 1,
                             );
 
     if (commandExists('x86_64-w64-mingw32-gcc')) {
@@ -794,6 +807,8 @@ sub libSuffix($) {
         $suffix = '.a';
     } elsif ($platform eq 'DARWIN') {
         $suffix = '.dylib';
+    } elsif ($platform eq 'OS/2') {
+        $suffix = '.dll';
     } else {
         $suffix = '.so';
     }
@@ -827,6 +842,10 @@ sub getLibTypes($$$$$$$$) {
         } elsif ($platform eq "DARWIN") {
             $netpbmlibtype = "dylib";
             $netpbmlibsuffix = "dylib";
+        } elsif ($platform eq "OS/2") {
+            $netpbmlibtype = "dll";
+            $netpbmlibsuffix = "dll";
+            $shlibprefixlist = "";
         } else {
 	    if ($platform eq "IRIX") {
 		$netpbmlibtype = "irixshared";
@@ -2520,6 +2539,13 @@ if ($platform eq "GNU") {
     }
     push(@config_mk, "LDSHLIB = -dynamiclib $installNameOpt\n");
 #    push(@config_mk, "INSTALL = install\n");
+} elsif ($platform eq "OS/2") {
+    makeCompilerGcc(\@config_mk);
+    push(@config_mk, "EXE = .exe\n");
+    push(@config_mk, 'LDFLAGS += -Zomf -Zhigh-mem', "\n");
+    push(@config_mk, "LDSHLIB =\n");
+    push(@config_mk, 'DLLVER=$(NETPBM_MAJOR_RELEASE)', "\n");
+    push(@config_mk, 'RGB_DB_PATH=/@unixroot/usr/local/netpbm/rgb.txt:/@unixroot/usr/share/netpbm/rgb.txt', "\n");
 } else {
     die ("Internal error: invalid value for \$platform: '$platform'\n");
 }
@@ -2559,7 +2585,7 @@ if (!$flex_result) {
     }
 }
 
-if ($compiler eq 'gcc') {
+if ($compiler eq 'gcc' && $platform ne "OS/2") {
     push(@config_mk, "CFLAGS_SHLIB += -fPIC\n");
 }
 
