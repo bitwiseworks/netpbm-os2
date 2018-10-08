@@ -212,7 +212,7 @@ fixBadPixels(Image const image) {
             if (errno != ERANGE)
                 return;
         }
-#if MSVCRT
+#if defined(MSVCRT) || defined(__OS2__)
         if (fname[1] == ':')
             memmove (fname, fname+2, len-2);
         for (cp=fname; *cp; cp++)
