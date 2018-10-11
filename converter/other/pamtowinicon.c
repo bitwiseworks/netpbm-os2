@@ -1,4 +1,6 @@
+#ifndef __OS2__
 #define _POSIX_SOURCE   /* Make sure fdopen() is in <stdio.h> */
+#endif
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
