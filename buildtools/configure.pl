@@ -2546,6 +2546,7 @@ if ($platform eq "GNU") {
     push(@config_mk, "LDSHLIB =\n");
     push(@config_mk, 'DLLVER=$(NETPBM_MAJOR_RELEASE)', "\n");
     push(@config_mk, 'RGB_DB_PATH=/@unixroot/usr/local/netpbm/rgb.txt:/@unixroot/usr/share/netpbm/rgb.txt', "\n");
+    push(@config_mk, 'STRIPFLAG =', "\n");
 } else {
     die ("Internal error: invalid value for \$platform: '$platform'\n");
 }
