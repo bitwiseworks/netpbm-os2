@@ -250,6 +250,12 @@ install.lib: $(PKGDIR)/lib $(PKGDIR)/link
           $(SYMLINK) libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN) $(SONAME)
 endif
 ifeq ($(NETPBMLIBTYPE),dll)
+ifeq ($(UNAME),OS/2)
+install.lib: $(PKGDIR)/lib
+	( cd $(PKGDIR)/lib ; rm -f $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll )
+	$(INSTALL) -c $(STRIPFLAG) -m $(INSTALL_PERM_LIBD) \
+          $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll $(PKGDIR)/lib/
+else
 #install a Windows DLL shared library
 #Note that unlike Unix libraries, a Windows DLL must go into a directory
 #that is in the PATH, so we use bin/ instead of lib/
@@ -257,6 +263,7 @@ install.lib: $(PKGDIR)/bin
 	( cd $(PKGDIR)/bin ; rm -f $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll )
 	$(INSTALL) -c $(STRIPFLAG) -m $(INSTALL_PERM_LIBD) \
           $(NETPBMSHLIBPREFIX)netpbm$(DLLVER).dll $(PKGDIR)/bin/
+endif
 endif
 ifeq ($(NETPBMLIBTYPE),dylib)
 # install a Darwin-style shared library
@@ -290,7 +297,11 @@ install.staticlib: $(PKGDIR)/link
 # Install a shared library stub -- the ".so" file used at link time to
 # prepare a program for dynamically linking a library at run time 
 .PHONY: install.sharedlibstub
+ifeq ($(UNAME),OS/2)
+install.sharedlibstub: $(PKGDIR)/lib
+else
 install.sharedlibstub: $(PKGDIR)/link
+endif
 ifeq ($(NETPBMLIBTYPE),unixshared)
 # install the link-time (.so) links to the runtime libraries
 	cd $(PKGDIR)/link ; \
@@ -299,7 +310,11 @@ ifeq ($(NETPBMLIBTYPE),unixshared)
             libnetpbm.$(NETPBMLIBSUFFIX)
 endif
 ifeq ($(NETPBMLIBTYPE),dll)
+ifeq ($(UNAME),OS/2)
+	$(INSTALL) -c -m $(INSTALL_PERM_LIBS) libnetpbm_dll.a $(PKGDIR)/lib
+else
 	$(INSTALL) -c -m $(INSTALL_PERM_LIBS) libnetpbm.dll.a $(PKGDIR)/link
+endif
 endif
 ifeq ($(NETPBMLIBTYPE),dylib)
 	cd $(PKGDIR)/link/ ; \
