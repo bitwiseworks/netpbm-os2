@@ -252,7 +252,7 @@ init_package:
 	  echo "  make package pkgdir=/tmp/newnetpbm "; \
 	  false; \
 	  fi
-	mkdir $(PKGDIR)
+	mkdir -p $(PKGDIR)
 	echo "Netpbm install package made by 'make package'" \
 	    >$(PKGDIR)/pkginfo
 	date >>$(PKGDIR)/pkginfo
