@@ -320,7 +320,10 @@ def main(args, mainout=sys.stdout, mainerr=sys.stderr):
                 continue
             indoc = infp.read()
             infp.close()
-            tempfile = file + ".~%s-%d~" % (name, os.getpid())
+            if sys.platform == 'os2knix':
+                tempfile = file + ".~%d~" % (os.getpid())
+            else:
+                tempfile = file + ".~%s-%d~" % (name, os.getpid())
             try:
                 outfp = open(tempfile, "w")
             except OSError:
