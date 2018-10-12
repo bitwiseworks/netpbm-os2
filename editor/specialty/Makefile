@@ -54,4 +54,4 @@ install.bin.local: $(PKGDIR)/bin
 # pamoil replaced pgmoil in June 2001.
 	cd $(PKGDIR)/bin ; \
 	rm -f pgmoil$(EXE) ; \
-	$(SYMLINK) pamoil$(EXE) pgmoil$(EXE)
+	$(SYMLINK) pamoil$(EXE) pgmoil$(SYM_EXE)

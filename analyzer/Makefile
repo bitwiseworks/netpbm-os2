@@ -56,9 +56,9 @@ install.bin: install.bin.local
 install.bin.local: $(PKGDIR)/bin
 # Remember that $(SYMLINK) might just be a copy command.
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamslice$(EXE) pgmslice$(EXE)
+	$(SYMLINK) pamslice$(EXE) pgmslice$(SYM_EXE)
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamfile$(EXE) pnmfile$(EXE)
+	$(SYMLINK) pamfile$(EXE) pnmfile$(SYM_EXE)
 
 FORCE:
 

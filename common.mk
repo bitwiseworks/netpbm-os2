@@ -77,6 +77,11 @@ UNAME := $(shell uname -s)
 VENDOR ?=community
 BUILD_INFO=\#\#1\#\# $(shell date +'%d %b %Y %H:%M:%S')     $(shell uname -n)
 BUILDLEVEL_INFO=@\#$(VENDOR):$(NETPBM_MAJOR_RELEASE).$(NETPBM_MINOR_RELEASE).$(NETPBM_POINT_RELEASE)\#@$(BUILD_INFO)::::$(NETPBM_POINT_RELEASE)::
+ifeq ($(UNAME),OS/2)
+SYM_EXE =
+else
+SYM_EXE = $(EXE)
+endif
 
 # .DELETE_ON_ERROR is a special predefined Make target that says to delete
 # the target if a command in the rule for it fails.  That's important,
@@ -122,7 +127,11 @@ LDLIBS = $(LOADLIBES) $(LIBS)
 # way to detect that case and fail, so I just add a '/' to the front
 # if it isn't already there.
 ifneq ($(pkgdir)x,x)
+ifeq ($(UNAME),OS/2)
+  PKGDIR = $(pkgdir)
+else
   PKGDIR = $(patsubst //%,/%, /$(pkgdir))
+endif
 else
   PKGDIR = $(PKGDIR_DEFAULT)
 endif

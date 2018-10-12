@@ -254,45 +254,45 @@ install.bin.local: $(PKGDIR)/bin
 # Remember that $(SYMLINK) might just be a copy command.
 # backward compatibility: program used to be named pnmnoraw
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pnmtoplainpnm$(EXE) pnmnoraw$(EXE)
+	$(SYMLINK) pnmtoplainpnm$(EXE) pnmnoraw$(SYM_EXE)
 # backward compatibility: program used to be gemtopbm
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) gemtopnm$(EXE) gemtopbm$(EXE)
+	$(SYMLINK) gemtopnm$(EXE) gemtopbm$(SYM_EXE)
 # In October 2001, pnmtojpeg replaced ppmtojpeg
 ifneq ($(JPEGLIB),NONE)
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pnmtojpeg$(EXE) ppmtojpeg$(EXE)
+	$(SYMLINK) pnmtojpeg$(EXE) ppmtojpeg$(SYM_EXE)
 endif
 # In March 2002, bmptopnm replaced bmptoppm
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) bmptopnm$(EXE) bmptoppm$(EXE)
+	$(SYMLINK) bmptopnm$(EXE) bmptoppm$(SYM_EXE)
 # In May 2002, pamtouil replaced ppmtouil
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtouil$(EXE) ppmtouil$(EXE)
+	$(SYMLINK) pamtouil$(EXE) ppmtouil$(SYM_EXE)
 # In July 2002, pamtotga replaced ppmtotga
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtotga$(EXE) ppmtotga$(EXE)
+	$(SYMLINK) pamtotga$(EXE) ppmtotga$(SYM_EXE)
 # In March 2005, we realized that pamtopnm obviates pnmtopnm
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtopnm$(EXE) pnmtopnm$(EXE)
+	$(SYMLINK) pamtopnm$(EXE) pnmtopnm$(SYM_EXE)
 # In October 2005, pamtofits replaced pnmtofits
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtofits$(EXE) pnmtofits$(EXE)
+	$(SYMLINK) pamtofits$(EXE) pnmtofits$(SYM_EXE)
 ifneq ($(TIFF_PREREQ_MISSING),Y)
 # In October 2005, pamtotiff replaced pnmtotiff
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtotiff$(EXE) pnmtotiff$(EXE)
+	$(SYMLINK) pamtotiff$(EXE) pnmtotiff$(SYM_EXE)
 endif
 ifeq ($(HAVE_PNGLIB),Y)
 # In September 2009, pngtopam replaced pngtopnm
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pngtopam$(EXE) pngtopnm$(EXE)
+	$(SYMLINK) pngtopam$(EXE) pngtopnm$(SYM_EXE)
 endif
 # In December 2010, sunicontopnm replaced icontopbm
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) sunicontopnm$(EXE) icontopbm$(EXE)
+	$(SYMLINK) sunicontopnm$(EXE) icontopbm$(SYM_EXE)
 ifeq ($(HAVE_PNGLIB),Y)
 # In June 2015, pamtopng replaced pamrgbapng
 	cd $(PKGDIR)/bin ; \
-	$(SYMLINK) pamtopng$(EXE) pamrgbatopng$(EXE)
+	$(SYMLINK) pamtopng$(EXE) pamrgbatopng$(SYM_EXE)
 endif

@@ -59,14 +59,14 @@ install.bin.local: $(PKGDIR)/bin
 # In July 2002, pamarith replaced pnmarith
 	cd $(PKGDIR)/bin ; \
 	  rm -f pnmarith$(EXE) ; \
-	  $(SYMLINK) pamarith$(EXE) pnmarith$(EXE)
+	  $(SYMLINK) pamarith$(EXE) pnmarith$(SYM_EXE)
 # In December 2005, pamsplit replaced pnmsplit
 	cd $(PKGDIR)/bin ; \
 	  rm -f pnmsplit$(EXE) ; \
-	  $(SYMLINK) pamsplit$(EXE) pnmsplit$(EXE)
+	  $(SYMLINK) pamsplit$(EXE) pnmsplit$(SYM_EXE)
 # In February 2006, pamdepth replaced pnmdepth
 	cd $(PKGDIR)/bin ; \
 	  rm -f pnmdepth$(EXE) ; \
-	  $(SYMLINK) pamdepth$(EXE) pnmdepth$(EXE)
+	  $(SYMLINK) pamdepth$(EXE) pnmdepth$(SYM_EXE)
 
 FORCE:
